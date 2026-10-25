@@ -33,6 +33,14 @@ java -jar target/chat-sockets-1.0.0.jar cliente localhost 5000 daniel
 - Cierre ordenado de recursos con `AutoCloseable` y try-with-resources.
 - **Pruebas de integracion reales**: `ServidorChatTest` levanta el servidor en un puerto libre, conecta clientes de verdad sobre loopback y verifica la difusion y los privados con colas bloqueantes y timeouts.
 
+## Rate limiting
+
+`LimitadorDeMensajes` previene flood y spam con una ventana deslizante por usuario. Cada usuario puede enviar un maximo de N mensajes dentro de una ventana de tiempo configurable. Si la excede, los mensajes se rechazan hasta que la ventana se desplace.
+
+- Cola de marcas de tiempo por usuario (`ConcurrentLinkedQueue`)
+- Reloj inyectable para pruebas deterministas sin `Thread.sleep`
+- Las marcas expiradas se purgan automaticamente en cada consulta
+
 ## Como correr las pruebas
 
 ```bash
